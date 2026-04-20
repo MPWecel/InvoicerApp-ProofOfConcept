@@ -29,5 +29,20 @@
     > frontend apps:: SPAs in React+Typescript and in Blazor WebAssembly as a comparison.
       >> Blazor WebAssembly SPA Client
       >> React 18 + Typescript SPA using Vite build, React Query for data fetching, Zustand for auth state
-  ### 3.2 
+  ### 3.2 Planned project structure::
+    > Monorepo
+    > Folder structure::
+      /InvoiceApp
+        /docs
+        /src
+          /InvoiceApp.Domain
+          /InvoiceApp.Application
+          /InvoiceApp.Infrastructure
+          /InvoiceApp.Api
+          /InvoiceApp.BlazorClient
+          /InvoiceApp.ReactClient
+        /docker
+          /docker-compose.yml
+          /docker-compose.override.yml
+        /InvoiceApp.sln
   
