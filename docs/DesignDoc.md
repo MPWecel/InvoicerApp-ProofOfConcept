@@ -17,5 +17,17 @@
     > environment variables for setting DEV/TEST/PROD environment and appropriate app behaviour depending on those variables. Secrets also read fron ENV
     > Backend app in clean architecture, implementing CQRS and Event Sourcing.
     > Simple authentication and authorisation using JWT tokens - barebones solution is enough;
-    > 
+
+## 3. Solution architecture::
+  ### 3.1 High level overview::
+    > backend app follows the Clean Architecture pattern, outer layers depend on the inner, never the other way round.
+    > backend app layers:
+      >> Domain          -  The innermost layer with no external dependencies. Defines Entities, Value Objects, Domain Events, Enums and Constants
+      >> Application     -  Depends on Domain. Defines CQRS Commands/Queries/Handlers (MediatR), DTOs, Interfaces (IInvoiceRepository, IEmailService, IInvoiceGenerator)
+      >> Infrastructure  -  Depends on Domain and Application, implements interfaces defined in Application, contains EF Core DbContext, PostgreSQL migrations, MailKit email service, PuppeteerSharp PDF generator, Razor HTML generator, MassTransit/RabbitMQ publisher
+      >> API             -  Outermost layer of the backend, exposes API endpoints for client apps to consume and call. Contains: ASP.NET WebAPI controllers, JWT auth middleware, Swagger/Scalar docs, DI composition root, environment config
+    > frontend apps:: SPAs in React+Typescript and in Blazor WebAssembly as a comparison.
+      >> Blazor WebAssembly SPA Client
+      >> React 18 + Typescript SPA using Vite build, React Query for data fetching, Zustand for auth state
+  ### 3.2 
   
