@@ -12,4 +12,10 @@
     > Generate a periodic report for a selectad range of dates, that would contain the aggregate values such as: number of invoices issued, total value of invoices, etc
     
   ### 2.2 Non-functional
-    
+    > Tech stack: .NET version 8 or above, ASP.NET WebAPI, PostgreSQL 16, Docker, frontend: React or Blazor;
+    > solution fully containerised using Docker and Docker-compose.
+    > environment variables for setting DEV/TEST/PROD environment and appropriate app behaviour depending on those variables. Secrets also read fron ENV
+    > Backend app in clean architecture, implementing CQRS and Event Sourcing.
+    > Simple authentication and authorisation using JWT tokens - barebones solution is enough;
+    > 
+  
