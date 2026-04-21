@@ -46,3 +46,25 @@
           /docker-compose.override.yml
         /InvoiceApp.sln
   
+## 4.  Domain model::
+  ### 4.1 Entities and Value Objects::
+    |  #  |  Type        |  Name                 |  Fields                                                                                                        |
+    |=====|==============|=======================|================================================================================================================|
+    |  1  |  Entity      |  Invoice              |  Id, InvoiceNumber, CreatedAt, Status, SupplierId, BuyerId, Items (list), TaxRate, TaxAmount, SubTotal, Total  |
+    |-----|--------------|-----------------------|----------------------------------------------------------------------------------------------------------------|
+    |  2  |  Entity      |  InvoiceItem          |  Id, InvoiceId, Description, Quantity, UnitPrice, LineTotal                                                    |
+    |-----|--------------|-----------------------|----------------------------------------------------------------------------------------------------------------|
+    |  3  |  ValueObject |  Party                |  Name, Code, Email                                                                                             |
+    |-----|--------------|-----------------------|----------------------------------------------------------------------------------------------------------------|
+    |  4  |  DomainEvent |  InvoiceCreatedEvent  |  InvoiceId, InvoiceNumber, SellerEmail, BuyerEmail, CreatedAt                                                  |      
+    |-----|--------------|-----------------------|----------------------------------------------------------------------------------------------------------------|
+    |  5  |  Enum        |  InvoiceStatus        |  Draft, Sent, Deleted                                                                                          |
+  ## 4.2 Business rules::
+    >  Invoice numbers are auto-generated as INV-YYYYMM-NNNN (sequential per month) 
+    >  SubTotal = sum of (Quantity × UnitPrice) across all items 
+    >  TaxAmount = SubTotal × TaxRate (default 23% VAT — configurable per invoice)  
+    >  Total = SubTotal + TaxAmount  
+    >  Invoices in Sent or Deleted status cannot be re-sent  
+    >  Soft-delete: invoices are marked Deleted but remain in the database for reporting.
+
+  
