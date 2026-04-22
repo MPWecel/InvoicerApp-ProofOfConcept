@@ -67,4 +67,22 @@
     >  Invoices in Sent or Deleted status cannot be re-sent  
     >  Soft-delete: invoices are marked Deleted but remain in the database for reporting.
 
+## 5. CQRS Design::
+  ### 5.1 Commands::
+    > CreateInvoiceCommand  -  Creates an invoice, saves it in database, fires InvoiceCreatedEvent, returns the Id of the created invoice
+    > SendInvoiceEmailCommand  -  Generates HTML and PDF from invoice data, sends it via SMTP, updates status, returns an int
+    > DeleteInvoiceCommand  -  Performs a soft-delete, returns an int
   
+  ### 5.2 Queries::
+    > GetInvoicesQuery  -  returns a List of all invoices persisted in the database, except the soft-deleted ones;
+    > GetInvoiceByIdQuery  -  returns an invoice DTO pertaining to the invoice of a given id, null if no such id in db
+    > GetInvoicePdfQuery  -  generates a pdf file and returns a byte array representing that file
+    > GetSalesReportQuery  -  returns a SalesReportDTO that contains aggregate data from invoices from a set date range
+  
+  ### 5.3 Event flow::
+  
+## 6. REST API Design::
+
+## 7. Database schema::
+
+## 8. 
