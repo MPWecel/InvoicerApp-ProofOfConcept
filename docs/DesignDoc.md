@@ -48,17 +48,17 @@
   
 ## 4.  Domain model::
   ### 4.1 Entities and Value Objects::
-    |  #  |  Type        |  Name                 |  Fields                                                                                                        |
-    |=====|==============|=======================|================================================================================================================|
-    |  1  |  Entity      |  Invoice              |  Id, InvoiceNumber, CreatedAt, Status, SupplierId, BuyerId, Items (list), TaxRate, TaxAmount, SubTotal, Total  |
-    |-----|--------------|-----------------------|----------------------------------------------------------------------------------------------------------------|
-    |  2  |  Entity      |  InvoiceItem          |  Id, InvoiceId, Description, Quantity, UnitPrice, LineTotal                                                    |
-    |-----|--------------|-----------------------|----------------------------------------------------------------------------------------------------------------|
-    |  3  |  ValueObject |  Party                |  Name, Code, Email                                                                                             |
-    |-----|--------------|-----------------------|----------------------------------------------------------------------------------------------------------------|
-    |  4  |  DomainEvent |  InvoiceCreatedEvent  |  InvoiceId, InvoiceNumber, SellerEmail, BuyerEmail, CreatedAt                                                  |      
-    |-----|--------------|-----------------------|----------------------------------------------------------------------------------------------------------------|
-    |  5  |  Enum        |  InvoiceStatus        |  Draft, Sent, Deleted                                                                                          |
+    |  #  |  Type        |  Name                 |  Fields                                                                                                        | 
+    |=====|==============|=======================|================================================================================================================| 
+    |  1  |  Entity      |  Invoice              |  Id, InvoiceNumber, CreatedAt, Status, SupplierId, BuyerId, Items (list), TaxRate, TaxAmount, SubTotal, Total  | 
+    |-----|--------------|-----------------------|----------------------------------------------------------------------------------------------------------------| 
+    |  2  |  Entity      |  InvoiceItem          |  Id, InvoiceId, Description, Quantity, UnitPrice, LineTotal                                                    | 
+    |-----|--------------|-----------------------|----------------------------------------------------------------------------------------------------------------| 
+    |  3  |  ValueObject |  Party                |  Name, Code, Email                                                                                             | 
+    |-----|--------------|-----------------------|----------------------------------------------------------------------------------------------------------------| 
+    |  4  |  DomainEvent |  InvoiceCreatedEvent  |  InvoiceId, InvoiceNumber, SellerEmail, BuyerEmail, CreatedAt                                                  | 
+    |-----|--------------|-----------------------|----------------------------------------------------------------------------------------------------------------| 
+    |  5  |  Enum        |  InvoiceStatus        |  Draft, Sent, Deleted                                                                                          | 
   ## 4.2 Business rules::
     >  Invoice numbers are auto-generated as INV-YYYYMM-NNNN (sequential per month) 
     >  SubTotal = sum of (Quantity × UnitPrice) across all items 
@@ -80,9 +80,24 @@
     > GetSalesReportQuery  -  returns a SalesReportDTO that contains aggregate data from invoices from a set date range
   
   ### 5.3 Event flow::
-  
+    On invoice creation the following chain executes:
+      1. CreateInvoiceCommand dispatched via MediatR 
+      2. Handler persists invoice to PostgreSQL (EF Core) 
+      3. Handler raises InvoiceCreatedEvent via MediatR Notification 
+      4a. InvoiceCreatedEventHandler (in-process): logs to console/DB 
+      4b. RabbitMqPublishHandler: publishes to 'invoice.created' exchange via MassTransit
+
 ## 6. REST API Design::
+  ## 6.1 Authentication
+
+  ## 6.2 Endpoints
 
 ## 7. Database schema::
+  ## 7.1 Tables::
+  
+## 8. Infrastructure Services
+  ## 8.1 Invoice Generation::
 
-## 8. 
+  ## 8.2 Email::
+
+  ## 8.1 Messaging queue::
