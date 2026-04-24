@@ -88,9 +88,19 @@
       4b. RabbitMqPublishHandler: publishes to 'invoice.created' exchange via MassTransit
 
 ## 6. REST API Design::
-  ## 6.1 Authentication
-
-  ## 6.2 Endpoints
+  ## 6.1 Authentication::
+    >  POST /api/auth/login — returns JWT access token (24h expiry); 
+    >  All other endpoints require Authorization: Bearer <token> header 
+    >  DEV seed user: seller@invoiceapp.dev / Password1!
+  ## 6.2 Endpoints::
+    POST    /api/auth/login          No   Authenticate, get JWT token
+    GET     /api/invoices            Yes  List invoices. Query: ?sortBy=supplier|date
+    GET     /api/invoices/{id}       Yes  Get single invoice detail.
+    POST    /api/invoices            Yes  Create invoice.
+    DELETE  /api/invoices/{id}       Yes  Soft-delete invoice.
+    GET     /api/invoices/{id}/pdf   Yes  Download invoice PDF.
+    POST    /api/invoices/{id}/send  Yes  Send invoice email to buyer
+    GET     /api/reports/sales       Yes  Sales report. Query: ?from=&to=
 
 ## 7. Database schema::
   ## 7.1 Tables::
