@@ -93,6 +93,7 @@
     >  All other endpoints require Authorization: Bearer <token> header 
     >  DEV seed user: seller@invoiceapp.dev / Password1!
   ## 6.2 Endpoints::
+    Verb    URL                      AUTH Description
     POST    /api/auth/login          No   Authenticate, get JWT token
     GET     /api/invoices            Yes  List invoices. Query: ?sortBy=supplier|date
     GET     /api/invoices/{id}       Yes  Get single invoice detail.
