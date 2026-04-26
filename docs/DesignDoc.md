@@ -1,7 +1,7 @@
-## 1. Application overview:
+## 1. Application overview::
   InvoicerApp is a POC of an invoicing application using PostgreSQL as a database, ASP.NET WebAPI as a backend REST API gateway and front-end clients (TBD later)
 
-## 2. Requirements:
+## 2. Requirements::
   ### 2.1 Functional:: The app must allow user to perform the following actions:
     > Create invoices by filling a form, that allows to set a buyer, a seller, and line items of an invoice, fields such as tax and totals need to be autocalculated based on filled form data and predesigned rules. 
       Invoice creation must emit a domain event.
@@ -11,7 +11,7 @@
     > List all existing invoices, filter and sort the list, view details of a selected invoice;
     > Generate a periodic report for a selectad range of dates, that would contain the aggregate values such as: number of invoices issued, total value of invoices, etc
     
-  ### 2.2 Non-functional
+  ### 2.2 Non-functional::
     > Tech stack: .NET version 8 or above, ASP.NET WebAPI, PostgreSQL 16, Docker, frontend: React or Blazor;
     > solution fully containerised using Docker and Docker-compose.
     > environment variables for setting DEV/TEST/PROD environment and appropriate app behaviour depending on those variables. Secrets also read fron ENV
@@ -88,11 +88,11 @@
       4b. RabbitMqPublishHandler: publishes to 'invoice.created' exchange via MassTransit
 
 ## 6. REST API Design::
-  ## 6.1 Authentication::
+  ### 6.1 Authentication::
     >  POST /api/auth/login — returns JWT access token (24h expiry); 
     >  All other endpoints require Authorization: Bearer <token> header 
     >  DEV seed user: seller@invoiceapp.dev / Password1!
-  ## 6.2 Endpoints::
+  ### 6.2 Endpoints::
 	
 	|	#	|	Verb	|	AUTH reqired	|	URL						|	DESCRIPTION										|	
 	|=======|===========|===================|===========================|===================================================|	
@@ -114,7 +114,7 @@
 	|-------|-----------|-------------------|---------------------------|---------------------------------------------------|	
 	
 ## 7. Database schema::
-	## 7.1 Tables::
+	### 7.1 Tables::
 	
 	|	#	|	TABLE				|	COLUMN			|	TYPE					|	NOTES											|	
 	|=======|=======================|===================|===========================|===================================================|	
@@ -171,21 +171,52 @@
 	This keeps invoices self-contained and immutable to contact changes.
 	
 ## 8. Infrastructure Services::
-	## 8.1 Invoice Generation::
+	### 8.1 Invoice Generation::
 	>	Step 1 — Razor template renders invoice HTML using a shared InvoiceViewModel.: HTML
 	>	Step 2 — PuppeteerSharp spins a headless Chromium instance, loads the HTML, and exports to PDF bytes. Chromium binaries are downloaded once at container startup via BrowserFetcher.: PDF
 	>	Generated files are not stored on disk; PDF bytes are produced on demand per request (GetInvoicePdfQuery) or attached to email.
 
-	## 8.2 Email::
+	### 8.2 Email::
 	>	MailKit library sends SMTP to MailHog on port 1025.
 	>	Email body = HTML invoice template. PDF attached as invoice-{number}.pdf.
 	>	MailHog web UI runs at http://localhost:8025 for DEV viewing.
 
 
-	## 8.1 Messaging queue::
+	### 8.1 Messaging queue::
 	>	MassTransit abstracts the RabbitMQ connection. Configured in Infrastructure layer.
 	>	Exchange: invoice.created (fanout). Consumer example included for demo purposes (logs event).
 	>	RabbitMQ Management UI at http://localhost:15672 (guest/guest) in DEV.
 	
+## 9. Authentication & Security::
+	>	JWT Bearer tokens issued by the API on successful login.
+	>	Token contains: sub (userId), email, role (Seller), expiry (24h).
+	>	Both frontends store the token in memory (Blazor: protected localStorage via ILocalStorageService; React: Zustand in-memory store). Never stored in plain localStorage/sessionStorage.
+	>	Single seed user created on application startup in DEV via IHostedService.
+	>	No user management endpoints — out of scope for this demo.
+
+## 10. Frontend Applications::
+	### 10.1 Shared feature set::
 	
+	### 10.2 Blazor WebAssembly::
 	
+	### 10.3 React::
+	
+## 11. Docker & Containerisation::
+	### 11.1 Services in docker-compose.yml::
+	
+	### 11.2 Environment Strategy::
+	
+## 12. Architectural Decisions Log::
+
+
+
+## 13. Implementation Plan::
+
+
+
+
+## 14. Full Tech Stack::
+
+
+
+
