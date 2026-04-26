@@ -93,16 +93,26 @@
     >  All other endpoints require Authorization: Bearer <token> header 
     >  DEV seed user: seller@invoiceapp.dev / Password1!
   ## 6.2 Endpoints::
-    Verb    URL                      AUTH Description
-    POST    /api/auth/login          No   Authenticate, get JWT token
-    GET     /api/invoices            Yes  List invoices. Query: ?sortBy=supplier|date
-    GET     /api/invoices/{id}       Yes  Get single invoice detail.
-    POST    /api/invoices            Yes  Create invoice.
-    DELETE  /api/invoices/{id}       Yes  Soft-delete invoice.
-    GET     /api/invoices/{id}/pdf   Yes  Download invoice PDF.
-    POST    /api/invoices/{id}/send  Yes  Send invoice email to buyer
-    GET     /api/reports/sales       Yes  Sales report. Query: ?from=&to=
-
+	
+	|	#	|	Verb	|	AUTH reqired	|	URL						|	DESCRIPTION										|	
+	|=======|===========|===================|===========================|===================================================|	
+	|	1	|	POST	|	NO				|	/api/auth/login			|	Authenticate, get JWT token						|	
+	|-------|-----------|-------------------|---------------------------|---------------------------------------------------|	
+	|	2	|	GET		|	YES				|	/api/invoices			|	List invoices. Query: ?sortBy=supplier/date		|	
+	|-------|-----------|-------------------|---------------------------|---------------------------------------------------|	
+	|	3	|	GET		|	YES				|	/api/invoices/{id}		|	Get single invoice detail.						|	
+	|-------|-----------|-------------------|---------------------------|---------------------------------------------------|	
+	|	4	|	POST	|	YES				|	/api/invoices			|	Create invoice.									|	
+	|-------|-----------|-------------------|---------------------------|---------------------------------------------------|	
+	|	5	|	DELETE	|	YES				|	/api/invoices/{id}		|	Soft-delete an invoice							|	
+	|-------|-----------|-------------------|---------------------------|---------------------------------------------------|	
+	|	6	|	GET		|	YES				|	/api/invoices/{id}/pdf	|	Download invoice PDF							|	
+	|-------|-----------|-------------------|---------------------------|---------------------------------------------------|	
+	|	7	|	POST	|	YES				|	/api/invoices/{id}/send	|	Send invoice email to buyer						|	
+	|-------|-----------|-------------------|---------------------------|---------------------------------------------------|	
+	|	8	|	GET		|	YES				|	/api/reports/sales		|	Sales report. Query: ?from=&to=					|	
+	|-------|-----------|-------------------|---------------------------|---------------------------------------------------|	
+	
 ## 7. Database schema::
   ## 7.1 Tables::
   
