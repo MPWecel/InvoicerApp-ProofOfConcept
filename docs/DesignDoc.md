@@ -114,8 +114,8 @@
 	|-------|-----------|-------------------|---------------------------|---------------------------------------------------|	
 	
 ## 7. Database schema::
-  ## 7.1 Tables::
-  
+	## 7.1 Tables::
+	
 	|	#	|	TABLE				|	COLUMN			|	TYPE					|	NOTES											|	
 	|=======|=======================|===================|===========================|===================================================|	
 	|	 1	|	Invoices			|	Id				|	UUID PK					|													|	
@@ -166,11 +166,26 @@
 	|-------|-----------------------|-------------------|---------------------------|---------------------------------------------------|	
 	|	24	|	Domain_Events_Log	|	Occured_At		|	TIMESTAMPTZ				|													|	
 	|-------|-----------------------|-------------------|---------------------------|---------------------------------------------------|	
-
 	
-## 8. Infrastructure Services
-  ## 8.1 Invoice Generation::
+	Party data (supplier/buyer) is stored as Owned Entity columns on the invoice table — no separate contacts table. 
+	This keeps invoices self-contained and immutable to contact changes.
+	
+## 8. Infrastructure Services::
+	## 8.1 Invoice Generation::
+	>	Step 1 — Razor template renders invoice HTML using a shared InvoiceViewModel.: HTML
+	>	Step 2 — PuppeteerSharp spins a headless Chromium instance, loads the HTML, and exports to PDF bytes. Chromium binaries are downloaded once at container startup via BrowserFetcher.: PDF
+	>	Generated files are not stored on disk; PDF bytes are produced on demand per request (GetInvoicePdfQuery) or attached to email.
 
-  ## 8.2 Email::
+	## 8.2 Email::
+	>	MailKit library sends SMTP to MailHog on port 1025.
+	>	Email body = HTML invoice template. PDF attached as invoice-{number}.pdf.
+	>	MailHog web UI runs at http://localhost:8025 for DEV viewing.
 
-  ## 8.1 Messaging queue::
+
+	## 8.1 Messaging queue::
+	>	MassTransit abstracts the RabbitMQ connection. Configured in Infrastructure layer.
+	>	Exchange: invoice.created (fanout). Consumer example included for demo purposes (logs event).
+	>	RabbitMQ Management UI at http://localhost:15672 (guest/guest) in DEV.
+	
+	
+	
